@@ -71,7 +71,7 @@ from dotenv import load_dotenv
 from samples.run_agent import run_agent
 
 if __name__ == "__main__":
-    # make sure to set the environment variables in
+    # make sure to set the environment variables in .env
     load_dotenv(verbose=True)
     asyncio.run(run_agent())
 ```
@@ -188,7 +188,7 @@ from dotenv import load_dotenv
 from samples.execute_command import execute_command
 
 if __name__ == "__main__":
-    # make sure to set the environment variables in
+    # make sure to set the environment variables in .env
     load_dotenv(verbose=True)
     asyncio.run(execute_command())
 ```
