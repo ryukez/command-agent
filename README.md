@@ -6,6 +6,10 @@
 
 This is an automonous agent based on [the Agent implementation of langchain](https://python.langchain.com/en/latest/modules/agents.html), but with the ability of memorizing reusable procedures as "commands".
 
+<div align="center">
+    <img src="https://github.com/rynsuke/command-agent/assets/3126563/8cd2314c-cf75-4b61-ba4d-6e2b2173f9a0" width="750">
+</div>
+
 **How it works**
 
 - Separated components of PlanningAgent and CommandExecutor. This is inspired by the architecture of [BabyAGI](https://github.com/yoheinakajima/babyagi), but more micro one on the task level.
@@ -67,7 +71,7 @@ from dotenv import load_dotenv
 from samples.run_agent import run_agent
 
 if __name__ == "__main__":
-    # make sure to set the environment variables in
+    # make sure to set the environment variables in .env
     load_dotenv(verbose=True)
     asyncio.run(run_agent())
 ```
@@ -184,7 +188,7 @@ from dotenv import load_dotenv
 from samples.execute_command import execute_command
 
 if __name__ == "__main__":
-    # make sure to set the environment variables in
+    # make sure to set the environment variables in .env
     load_dotenv(verbose=True)
     asyncio.run(execute_command())
 ```
