@@ -23,9 +23,9 @@ Output should only contain the output, with the format of JSON which satisfies t
 Output:
 """
 
-    def __init__(self, llm: BaseLLM):
+    def __init__(self, llm: BaseLLM, verbose: bool = False):
         prompt = PromptTemplate(template=self.PROMPT, input_variables=["context", "format"])
-        self.llm_chain = LLMChain(llm=llm, prompt=prompt)
+        self.llm_chain = LLMChain(llm=llm, prompt=prompt, verbose=verbose)
 
     async def execute(self, command: Command, variables: List[Variable], channel: Channel) -> Tuple[Any, str]:
         context = "\n\n".join(map(lambda v: f"{v.description}: {json.dumps(v.value, ensure_ascii=False)}", variables))
@@ -33,11 +33,10 @@ Output:
         if len(command.additional_prompts) > 0:
             format += "\n\nAdditional prompts:" + "\n".join(command.additional_prompts)
 
-        llm_result = self.llm_chain.run(context=context, format=format)
-
-        inputs = json.loads(llm_result)
-
         try:
+            llm_result = self.llm_chain.run(context=context, format=format)
+            inputs = json.loads(llm_result)
+
             outputs, error = await command.run(inputs, channel)
             if error != "":
                 return None, error

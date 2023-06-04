@@ -125,7 +125,7 @@ Task: {task}{agent_scratchpad}
             input_variables=["commands", "command_names", "variables", "variable_names", "task", "agent_scratchpad"],
         )
         self.plan_llm_chain = LLMChain(llm=plan_llm, prompt=prompt, verbose=verbose)
-        self.command_executor = CommandExecuter(command_llm)
+        self.command_executor = CommandExecuter(command_llm, verbose=verbose)
         self.channel = channel
         self.verbose = verbose
 
@@ -240,8 +240,9 @@ Task: {task}{agent_scratchpad}
         step_history: List[AgentStep] = []
         for step_number in range(self.max_step_count):
             action = self._plan(task.text, step_history, environment)
+            await self.channel.send("Action: ", action._asdict())
             if self.verbose:
-                print(action)
+                print(action._asdict())
 
             command = environment.commands[action.command]
             inputs = list(map(lambda v: environment.variables[v], action.input_variables))

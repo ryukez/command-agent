@@ -1,23 +1,29 @@
+import json
 from typing import Any
 from channels.channel import Channel
 
 
 class ChannelConsole(Channel):
-    async def send(self, message_object: Any):
-        print(f"\n{message_object}\n")
-
-    async def wait_check(self, command: str, inputs: Any) -> str:
+    async def send(self, message: str, data: Any = {}):
         lines = [
             "",
-            (
-                'Enter "OK" if the input looks good, otherwise put the reason'
-                " for rejection or details on how to fix the input:"
-            ),
-            f"Command: {command}",
-            "Inputs:",
-            f"{inputs}",
-            "",
+            message,
         ]
 
-        result = input("\n".join(lines))
-        return result if result != "OK" else ""
+        if data != {}:
+            lines.append("")
+            lines.append(json.dumps(data, indent=2, ensure_ascii=False))
+
+        print("\n".join(lines))
+
+    async def wait_reply(self, message: str, data: Any = {}) -> str:
+        lines = [
+            "",
+            message,
+        ]
+
+        if data != {}:
+            lines.append("")
+            lines.append(json.dumps(data, indent=2, ensure_ascii=False))
+
+        return input("\n".join(lines))

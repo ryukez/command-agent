@@ -60,9 +60,17 @@ class Command(metaclass=abc.ABCMeta):
             return None, error
 
         if self.human_check:
-            error = await channel.wait_check(self.name, inputs)
-            if error:
-                return None, error
+            reply = await channel.wait_reply(
+                "Enter 'OK' if the input looks good, otherwise put the reason"
+                " for rejection or details on how to fix the input",
+                {
+                    "command": self.name,
+                    "inputs": inputs,
+                },
+            )
+
+            if reply != "OK":
+                return None, reply
 
         outputs, error = await self._run(inputs, channel)
         if error:

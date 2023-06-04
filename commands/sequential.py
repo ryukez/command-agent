@@ -106,7 +106,7 @@ class SequentialCommandStepCommand(CompositeCommand):
             if error != "":
                 return None, error
 
-            await channel.send(self._step_summary(step, step_inputs, outputs, error))
+            await channel.send("Step: ", self._step_summary(step, step_inputs, outputs, error))
 
             variables[f"steps.{step.id}.output"] = Variable(
                 f"steps.{step.id}.output",
